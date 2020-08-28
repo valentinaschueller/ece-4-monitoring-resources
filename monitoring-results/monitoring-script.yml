@@ -1,0 +1,205 @@
+# =====================================================================
+# Monitoring for EC-Earth4 with ScriptEngine
+# =====================================================================
+- context:
+    main:
+        mondir: "{{main.rundir}}/monitor"
+- make_dir:
+    path: "{{main.mondir}}"
+
+# ---------------------------------------------------------------------
+# Computational diagnostics & general information
+# ---------------------------------------------------------------------
+- ece.mon.scalar:
+    title: "Experiment ID"
+    value: "{{main.experiment_id}}"
+    dst: "{{main.mondir}}/expid_scalar.yml"
+- ece.mon.scalar:
+    title: "Experiment Description"
+    value: "{{main.experiment_description}}"
+    dst: "{{main.mondir}}/description_scalar.yml"
+- ece.mon.simulatedyears_rte_scalar:
+    start: "{{schedule.start}}"
+    end: "{{schedule.leg.end}}"
+    dst: "{{main.mondir}}/simulatedyears_rte_scalar.yml"
+- ece.mon.timeseries:
+    title: "Simulated Years per Day"
+    coord_value: "{{schedule.leg.num}}"
+    coord_name: "Leg Number"
+    comment: "SYPD development during this simulation."
+    data_value: "{{((schedule.leg.end - schedule.leg.start)/model_elapsed_time/365)}}"
+    dst: "{{main.mondir}}/sypd_timeseries.nc"
+- ece.mon.diskusage_rte_scalar:
+    src: "{{main.rundir}}/output"
+    dst: "{{main.mondir}}/diskusage_rte_scalar.yml"
+
+# ---------------------------------------------------------------------
+# Ocean monitoring
+# ---------------------------------------------------------------------
+- find:
+    path: '{{main.rundir}}/output/{{"%03d" % schedule.leg.num}}'
+    pattern: "{{main.experiment_id}}_1m_T_*.nc"
+    set: oce_t_files
+- ece.mon.nemo_global_mean_year_mean_timeseries:
+    src: "{{oce_t_files}}"
+    varname: "tos"
+    domain: "{{main.rundir}}/domain_cfg.nc"
+    dst: "{{main.mondir}}/tos_nemo_global_mean_year_mean_timeseries.nc"
+- ece.mon.nemo_global_mean_year_mean_timeseries:
+    src: "{{oce_t_files}}"
+    varname: "sos"
+    domain: "{{main.rundir}}/domain_cfg.nc"
+    dst: "{{main.mondir}}/sos_nemo_global_mean_year_mean_timeseries.nc"
+- ece.mon.nemo_year_mean_temporalmap:
+    src: "{{oce_t_files}}"
+    varname: "tos"
+    dst: "{{main.mondir}}/tos_nemo_year_mean_temporalmap.nc"
+- ece.mon.nemo_all_mean_map:
+    src: "{{oce_t_files}}"
+    varname: "zos"
+    dst: "{{main.mondir}}/zos_nemo_all_mean_map.nc"
+
+# ---------------------------------------------------------------------
+# Sea-ice monitoring
+# ---------------------------------------------------------------------
+- find:
+    path: '{{main.rundir}}/output/{{"%03d" % schedule.leg.num}}'
+    pattern: "{{main.experiment_id}}_1m_ice_*02.nc"
+    set: feb_file
+- find:
+    path: '{{main.rundir}}/output/{{"%03d" % schedule.leg.num}}'
+    pattern: "{{main.experiment_id}}_1m_ice_*03.nc"
+    set: mar_file
+- find:
+    path: '{{main.rundir}}/output/{{"%03d" % schedule.leg.num}}'
+    pattern: "{{main.experiment_id}}_1m_ice_*09.nc"
+    set: sep_file
+- ece.mon.si3_hemis_sum_month_mean_timeseries:
+    src: 
+        - "{{mar_file[0]}}"
+        - "{{sep_file[0]}}"
+    domain: "{{main.rundir}}/domain_cfg.nc"
+    dst: "{{main.mondir}}/siarea_north_sum_mar+sep_mean_timeseries.nc"
+    hemisphere: north
+    varname: siconc
+- ece.mon.si3_hemis_sum_month_mean_timeseries:
+    src:
+        - "{{feb_file[0]}}"
+        - "{{sep_file[0]}}"
+    domain: "{{main.rundir}}/domain_cfg.nc"
+    dst: "{{main.mondir}}/siarea_south_sum_feb+sep_mean_timeseries.nc"
+    hemisphere: south
+    varname: siconc
+- ece.mon.si3_hemis_sum_month_mean_timeseries:
+    src: 
+        - "{{mar_file[0]}}"
+        - "{{sep_file[0]}}"
+    domain: "{{main.rundir}}/domain_cfg.nc"
+    dst: "{{main.mondir}}/sivol_north_sum_mar+sep_mean_timeseries.nc"
+    hemisphere: north
+    varname: sivolu
+- ece.mon.si3_hemis_sum_month_mean_timeseries:
+    src:
+        - "{{feb_file[0]}}"
+        - "{{sep_file[0]}}"
+    domain: "{{main.rundir}}/domain_cfg.nc"
+    dst: "{{main.mondir}}/sivol_south_sum_feb+sep_mean_timeseries.nc"
+    hemisphere: south
+    varname: sivolu
+- ece.mon.si3_hemis_point_month_mean_all_mean_map:
+    src: "{{mar_file}}"
+    hemisphere: north
+    varname: sivolu
+    dst: "{{main.mondir}}/sivolu_si3_north_point_mar_mean_all_mean_map.nc"
+- ece.mon.si3_hemis_point_month_mean_all_mean_map:
+    src: "{{sep_file}}"
+    hemisphere: north
+    varname: sivolu
+    dst: "{{main.mondir}}/sivolu_si3_north_point_sep_mean_all_mean_map.nc"
+- ece.mon.si3_hemis_point_month_mean_all_mean_map:
+    src: "{{feb_file}}"
+    hemisphere: south
+    varname: sivolu
+    dst: "{{main.mondir}}/sivolu_si3_south_point_feb_mean_all_mean_map.nc"
+- ece.mon.si3_hemis_point_month_mean_all_mean_map:
+    src: "{{sep_file}}"
+    hemisphere: south
+    varname: sivolu
+    dst: "{{main.mondir}}/sivolu_si3_south_point_sep_mean_all_mean_map.nc"
+- ece.mon.si3_hemis_point_month_mean_temporalmap:
+    src: "{{mar_file}}"
+    hemisphere: north
+    varname: siconc 
+    dst: "{{main.mondir}}/siconc_si3_north_point_mar_mean_temporalmap.nc"
+- ece.mon.si3_hemis_point_month_mean_temporalmap:
+    src: "{{sep_file}}"
+    hemisphere: north
+    varname: siconc 
+    dst: "{{main.mondir}}/siconc_si3_north_point_sep_mean_temporalmap.nc"
+- ece.mon.si3_hemis_point_month_mean_temporalmap:
+    src: "{{feb_file}}"
+    hemisphere: south
+    varname: siconc 
+    dst: "{{main.mondir}}/siconc_si3_south_point_feb_mean_temporalmap.nc"
+- ece.mon.si3_hemis_point_month_mean_temporalmap:
+    src: "{{sep_file}}"
+    hemisphere: south
+    varname: siconc 
+    dst: "{{main.mondir}}/siconc_si3_south_point_sep_mean_temporalmap.nc"
+
+# ---------------------------------------------------------------------
+# Atmosphere monitoring
+# ---------------------------------------------------------------------
+- find:
+    path: '{{main.rundir}}/output/{{"%03d" % schedule.leg.num}}'
+    pattern: "ICMGG{{main.experiment_id}}+??????"
+    set: atm_gg_files
+- ece.mon.oifs_global_mean_year_mean_timeseries:
+    src: "{{atm_gg_files}}"
+    dst: "{{main.mondir}}/2t_oifs_global_mean_year_mean_timeseries.nc"
+    grib_code: 167
+- ece.mon.oifs_all_mean_map:
+    src: "{{atm_gg_files}}"
+    dst: "{{main.mondir}}/2t_oifs_all_mean_map.nc"
+    grib_code: 167
+- ece.mon.oifs_year_mean_temporalmap:
+    src: "{{atm_gg_files}}"
+    dst: "{{main.mondir}}/istl1_oifs_year_mean_temporalmap.nc"
+    grib_code: 35
+
+# ---------------------------------------------------------------------
+# Redmine report
+# ---------------------------------------------------------------------
+- make_dir:
+    path: "{{main.mondir}}/presentation/redmine"
+- ece.mon.presentation.redmine:
+    src:
+        - "{{main.mondir}}/expid_scalar.yml"
+        - "{{main.mondir}}/description_scalar.yml"
+        - "{{main.mondir}}/simulatedyears_rte_scalar.yml"
+        - "{{main.mondir}}/sypd_timeseries.nc"
+        - "{{main.mondir}}/tos_nemo_global_mean_year_mean_timeseries.nc"
+        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/tos_nemo_year_mean_temporalmap.nc"
+          value_range: [-2, 30]
+        - "{{main.mondir}}/sivol_north_sum_mar+sep_mean_timeseries.nc"
+        - "{{main.mondir}}/sivol_south_sum_feb+sep_mean_timeseries.nc"
+        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_north_point_mar_mean_temporalmap.nc"
+          value_range: [0, 100]
+          colormap: 'Blues_r'
+        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_north_point_sep_mean_temporalmap.nc"
+          value_range: [0, 100]
+          colormap: 'Blues_r'
+        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_south_point_feb_mean_temporalmap.nc"
+          value_range: [0, 100]
+          colormap: 'Blues_r'
+        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_south_point_sep_mean_temporalmap.nc"
+          value_range: [0, 100]
+          colormap: 'Blues_r'
+        - "{{main.mondir}}/2t_oifs_global_mean_year_mean_timeseries.nc"
+        - "{{main.mondir}}/2t_oifs_all_mean_map.nc"
+        - "{{main.mondir}}/istl1_oifs_year_mean_temporalmap.nc"
+    local_dst: "{{main.mondir}}/presentation/redmine"
+    api_key: # api key
+    subject: "EC-Earth 4 experiment: {{main.experiment_id}}"
+    template: "scriptengine-tasks-ecearth/docs/templates/redmine_template.txt.j2"
+
