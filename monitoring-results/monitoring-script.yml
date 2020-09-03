@@ -162,9 +162,9 @@
     src: "{{atm_gg_files}}"
     dst: "{{main.mondir}}/2t_oifs_all_mean_map.nc"
     grib_code: 167
-- ece.mon.oifs_year_mean_temporalmap:
+- ece.mon.oifs_global_mean_year_mean_timeseries:
     src: "{{atm_gg_files}}"
-    dst: "{{main.mondir}}/istl1_oifs_year_mean_temporalmap.nc"
+    dst: "{{main.mondir}}/istl1_oifs_year_mean_timeseries.nc"
     grib_code: 35
 
 # ---------------------------------------------------------------------
@@ -179,20 +179,20 @@
         - "{{main.mondir}}/simulatedyears_rte_scalar.yml"
         - "{{main.mondir}}/sypd_timeseries.nc"
         - "{{main.mondir}}/tos_nemo_global_mean_year_mean_timeseries.nc"
-        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/tos_nemo_year_mean_temporalmap.nc"
+        - path: "{{main.mondir}}/tos_nemo_year_mean_temporalmap.nc"
           value_range: [-2, 30]
         - "{{main.mondir}}/sivol_north_sum_mar+sep_mean_timeseries.nc"
         - "{{main.mondir}}/sivol_south_sum_feb+sep_mean_timeseries.nc"
-        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_north_point_mar_mean_temporalmap.nc"
+        - path: "{{main.mondir}}/siconc_si3_north_point_mar_mean_temporalmap.nc"
           value_range: [0, 100]
           colormap: 'Blues_r'
-        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_north_point_sep_mean_temporalmap.nc"
+        - path: "{{main.mondir}}/siconc_si3_north_point_sep_mean_temporalmap.nc"
           value_range: [0, 100]
           colormap: 'Blues_r'
-        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_south_point_feb_mean_temporalmap.nc"
+        - path: "{{main.mondir}}/siconc_si3_south_point_feb_mean_temporalmap.nc"
           value_range: [0, 100]
           colormap: 'Blues_r'
-        - path: "/accumulus/rossby20/sm_uflad/ece-src/tetralith/ece-4-svn/runtime/se/run/MO10/monitor/siconc_si3_south_point_sep_mean_temporalmap.nc"
+        - path: "{{main.mondir}}/siconc_si3_south_point_sep_mean_temporalmap.nc"
           value_range: [0, 100]
           colormap: 'Blues_r'
         - "{{main.mondir}}/2t_oifs_global_mean_year_mean_timeseries.nc"
