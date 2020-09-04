@@ -1,4 +1,4 @@
-# EC-Earth 4: Monitoring
+# EC-Earth 4: OpenIFS Monitoring
 
 
 **Experiment ID**: MO10<br>
@@ -35,7 +35,7 @@ Global average time series of **167**. Each data point represents the (spatial a
 
 ## Sea Ice Temperature (Annual Mean)
 
-![](./istl1_oifs_year_mean_temporalmap.png "sea ice temperature (Annual Mean)")
+![](./istl1_oifs_global_mean_year_mean_timeseries.png "sea ice temperature (Annual Mean)")
 
 Global average time series of **35**. Each data point represents the (spatial and temporal) average over one leg.
 

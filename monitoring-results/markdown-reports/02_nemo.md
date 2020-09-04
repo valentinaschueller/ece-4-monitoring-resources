@@ -1,4 +1,4 @@
-# EC-Earth 4: Monitoring
+# EC-Earth 4: NEMO Monitoring
 
 
 **Experiment ID**: MO10<br>

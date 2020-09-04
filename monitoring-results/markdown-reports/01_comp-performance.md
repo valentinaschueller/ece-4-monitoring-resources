@@ -1,4 +1,4 @@
-# EC-Earth 4: Monitoring
+# EC-Earth 4: Computational Performance Monitoring
 
 
 **Experiment ID**: MO10<br>
