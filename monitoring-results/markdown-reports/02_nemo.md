@@ -10,27 +10,11 @@
 **Simulated Years**: 25<br>
 Current number of simulated years. 
 
-
-
-
-## Sea Surface Salinity (Annual Mean)
-
-![](./sos_nemo_global_mean_year_mean_timeseries.png "sea surface salinity (Annual Mean)")
-
-Global average time series of **sos**. Each data point represents the (spatial and temporal) average over one leg.
-
-
-
-
-
 ## Sea Surface Temperature (Annual Mean)
 
 ![](./tos_nemo_global_mean_year_mean_timeseries.png "sea surface temperature (Annual Mean)")
 
 Global average time series of **tos**. Each data point represents the (spatial and temporal) average over one leg.
-
-
-
 
 
 ## Sea Surface Temperature (Annual Mean Map)
@@ -40,6 +24,11 @@ Global average time series of **tos**. Each data point represents the (spatial a
 Leg Mean of **tos**.
 
 
+## Sea Surface Salinity (Annual Mean)
+
+![](./sos_nemo_global_mean_year_mean_timeseries.png "sea surface salinity (Annual Mean)")
+
+Global average time series of **sos**. Each data point represents the (spatial and temporal) average over one leg.
 
 
 
