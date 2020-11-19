@@ -1,6 +1,6 @@
 # EC-Earth 4 Monitoring Tool: Resources
 
-Here you can find resources and slides on the [EC-Earth 4 monitoring tool](https://github.com/uwefladrich/scriptengine-tasks-ecearth/). For information on how to use the tool and its implementation, refer to the documentation on [Read the Docs](scriptengine-tasks-for-ec-earth.rtfd.io).
+Here you can find resources and slides on the [EC-Earth 4 monitoring tool](https://github.com/uwefladrich/scriptengine-tasks-ecearth/). For information on how to use the tool and its implementation, refer to the documentation on [Read the Docs](scriptengine-tasks-ecearth.rtfd.io).
 
 Specifically, this repository contains:
 
